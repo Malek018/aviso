@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum BusinessStatus {
+  ACTIVE
+  DISABLED
+  PENDING
+}
+
+enum ReviewType {
+  ONSITE
+  GENERAL
+}
+model Establishment {
+  id String @id @default(cuid())
+  name String
+  category String
+  city String
+  address String
+  phone String?
+  description String?
+  price String?
+  availability String?
+  formalised Boolean @default(false)
+  statusOpen Boolean @default(true)
+  status BusinessStatus @default(ACTIVE)
+  latitude Float?
+  longitude Float?
+  sinceYear Int?
+  mapsQuery String?
+  disabledReason String?
+  noGate Boolean @default(false)
+  createdAt DateTime @default(now())
+  reviews Review[]
+}
+model Review {
+  id String @id @default(cuid())
+  establishmentId String
+  recommendation Boolean
+  text String
+  type ReviewType @default(ONSITE)
+  createdAt DateTime @default(now())
+  establishment Establishment @relation(fields:[establishmentId],references:[id],onDelete:Cascade)
+  @@index([establishmentId,createdAt])
+}

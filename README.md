@@ -12,6 +12,20 @@ npm run dev
 ```
 Puis ouvrir http://localhost:3000.
 
+La production utilise PostgreSQL. Créer une base gratuite avec Neon, Supabase ou
+une intégration Vercel, puis définir `DATABASE_URL` dans les variables
+d'environnement Vercel. Après avoir renseigné cette variable, initialiser la base
+distante depuis un terminal local :
+
+```bash
+$env:DATABASE_URL="postgresql://..."
+npx prisma db push
+npm run db:seed
+```
+
+Le fichier SQLite local ne doit pas être utilisé sur Vercel : il est ignoré par
+Git et le système de fichiers des fonctions Vercel n'est pas persistant.
+
 ## 2. Ce qui est déjà en place
 - Frontend Next.js / React responsive
 - Recherche par nom/catégorie et filtre par ville
